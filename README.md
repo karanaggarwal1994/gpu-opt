@@ -11,18 +11,30 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 
 # Installation
 1. Download LiFE software 
+
 	``` git clone https://github.com/brain-life/encode```
+	
 2. Change directory
 	``` cd encode ```
+	
 3. Download vistasoft software
+
 	``` git clone https://github.com/vistalab/vistasoft```
+	
 4. Download MBA software
+
 	``` git clone https://github.com/francopestilli/mba```
+	
 5. Download CUDA
+
 	``` https://developer.nvidia.com/cuda-downloads ```
+	
 6. Download GPU-opt software
+
 	``` git clone https://github.com/karan1994/gpu-opt```
-7. Download demo datasets from the repository  [doi:10.5967/K8X63JTX](https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/20995/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz)
+	
+7. Download demo datasets from the repository [doi:10.5967/K8X63JTX](https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/20995/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz)
+	
 	``` https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/20995/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz```
 
 # Dependencies
