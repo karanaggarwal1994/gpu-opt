@@ -36,7 +36,7 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 	
 7. Download GPU-opt software
 
-	``` git clone https://github.com/karan1994/gpu-opt```
+	``` git clone https://github.com/karanaggarwal1994/gpu-opt```
 
 
 # Dependencies
