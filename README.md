@@ -15,6 +15,7 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 	``` git clone https://github.com/brain-life/encode```
 	
 2. Change directory
+
 	``` cd encode ```
 	
 3. Download vistasoft software
@@ -28,14 +29,15 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 5. Download CUDA
 
 	``` https://developer.nvidia.com/cuda-downloads ```
+
+6. Download demo datasets from the repository [doi:10.5967/K8X63JTX](https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/20995/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz)
 	
-6. Download GPU-opt software
+	``` https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/2099/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz```
+	
+7. Download GPU-opt software
 
 	``` git clone https://github.com/karan1994/gpu-opt```
-	
-7. Download demo datasets from the repository [doi:10.5967/K8X63JTX](https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/20995/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz)
-	
-	``` https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/20995/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz```
+
 
 # Dependencies
 * [LiFE](https://github.com/brain-life/encode)
@@ -46,10 +48,13 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 
 # Running the GPU-opt code
 1. Run MATLAB
-2. Add the ecode folder path to MATLAB search path
+2. Add the encode folder path to MATLAB search path
+
 	```>>> addpath(genpath('/my/path/to/the/encode/folder/'))```
-3. Run 
-	```>>> gpu-opt-demo```
+	
+3. Run the script
+
+	```>>> gpu_opt_demo```
 
 # How to cite the paper
 Aggarwal, K., Bondhugula U. (2019, June) "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems" Accepted to ICS 2019 (to appear).
