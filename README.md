@@ -60,7 +60,7 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 	```>>> gpu_opt_demo```
 
 # How to cite the paper
-Aggarwal, K., Bondhugula U. (2019, June) "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems" Accepted to ICS 2019 (to appear).
+Karan Aggarwal, Uday Bondhugula "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems" Accepted to International Conference on Supercomputing (ICS) 2019 (to appear).
 
 # References
 [1] Pestilli, Franco, Jason D. Yeatman, Ariel Rokem, Kendrick N. Kay, and Brian A. Wandell. Evaluation and statistical inference for human connectomes. Nature methods 11, no. 10 (2014): 1058-1063.
