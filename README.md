@@ -1,7 +1,7 @@
 # LiFE-GPU-opt: Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems
 
 # About
-This software is an optimized implementation of the compute-intensive matrix operations of the LiFE algorithm running on GPUs.
+This software is an optimized implementation of the compute-intensive matrix operations of the LiFE algorithm for GPUs.
 
 # LiFE Code 
 The original LiFE [1,2] code can be found using the Github [link](https://github.com/brain-life/encode).
