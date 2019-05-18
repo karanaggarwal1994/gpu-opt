@@ -1,6 +1,6 @@
 // BSD 2-Clause License
 // 
-// Copyright (c) 2019, Karan Aggarwal and Uday Bondhugula
+// Copyright (c) 2019, Karan Aggarwal (karan@iisc.ac.in) and Uday Bondhugula (udayb@iisc.ac.in)
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
