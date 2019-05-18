@@ -64,6 +64,8 @@ Also, include the path in bashrc file (use [link](https://devtalk.nvidia.com/def
 # How to cite the paper
 Karan Aggarwal, Uday Bondhugula "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems" Accepted to International Conference on Supercomputing (ICS) 2019 (to appear).
 
+[Karan Aggarwal, Uday Bondhugula, Varsha Sreenivasan, Sridharan Devarajan "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core and Many-Core Systems"](https://arxiv.org/pdf/1905.06234.pdf).
+
 # References
 [1] Pestilli, Franco, Jason D. Yeatman, Ariel Rokem, Kendrick N. Kay, and Brian A. Wandell. Evaluation and statistical inference for human connectomes. Nature methods 11, no. 10 (2014): 1058-1063.
 
