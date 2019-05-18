@@ -36,9 +36,10 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 
 	``` git clone https://github.com/francopestilli/mba```
 	
-5. Download and Install CUDA
+5. Download and install CUDA
 
 	``` https://developer.nvidia.com/cuda-downloads ```
+Also, include the path in bashrc file (use [link](https://devtalk.nvidia.com/default/topic/995815/cuda-setup-and-installation/path-amp-ld_library_path/) for help).
 
 6. Download demo datasets from the repository [doi:10.5967/K8X63JTX](https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/20995/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz)
 	
