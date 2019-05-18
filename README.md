@@ -61,7 +61,7 @@ Also, include the CUDA path in bashrc file (use [link](https://devtalk.nvidia.co
 
 	```>>> gpu_opt_demo```
 
-# How to cite the paper
+# How to cite LiFE-GPU-opt
 [Karan Aggarwal, Uday Bondhugula "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems" Accepted to International Conference on Supercomputing (ICS) 2019 (to appear).](https://doi.org/10.1145/3330345.3332469)
 
 [Karan Aggarwal, Uday Bondhugula, Varsha Sreenivasan, Sridharan Devarajan "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core and Many-Core Systems"](https://arxiv.org/pdf/1905.06234.pdf).
