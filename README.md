@@ -3,6 +3,9 @@
 # About
 This software is an optimized implementation of the compute-intensive matrix operations of the LiFE algorithm running on GPUs.
 
+# LiFE Code 
+The original LiFE[1,2] code can be found using the Github [link](https://github.com/brain-life/encode).
+
 # License
 Copyright (2019), Karan Aggarwal, [karan@iisc.ac.in](karan@iisc.ac.in), Uday Bondhugula, [udayb@iisc.ac.in](udayb@iisc.ac.in)
 
@@ -58,3 +61,9 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 
 # How to cite the paper
 Aggarwal, K., Bondhugula U. (2019, June) "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems" Accepted to ICS 2019 (to appear).
+
+# References
+[1] Pestilli, Franco, Jason D. Yeatman, Ariel Rokem, Kendrick N. Kay, and Brian A. Wandell. Evaluation and statistical inference for human connectomes. Nature methods 11, no. 10 (2014): 1058-1063.
+
+[2] Caiafa, C. and Pestilli, F. Multidimensional encoding of brain connectome. Nature Scientific Reports 7, Article number: 11491 (2017)
+
