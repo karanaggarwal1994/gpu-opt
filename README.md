@@ -67,7 +67,7 @@ Karan Aggarwal, Uday Bondhugula "Optimizing the Linear Fascicle Evaluation Algor
 [Karan Aggarwal, Uday Bondhugula, Varsha Sreenivasan, Sridharan Devarajan "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core and Many-Core Systems"](https://arxiv.org/pdf/1905.06234.pdf).
 
 # References
-[1] Pestilli, Franco, Jason D. Yeatman, Ariel Rokem, Kendrick N. Kay, and Brian A. Wandell. Evaluation and statistical inference for human connectomes. Nature methods 11, no. 10 (2014): 1058-1063.
+[1] [Pestilli, Franco, Jason D. Yeatman, Ariel Rokem, Kendrick N. Kay, and Brian A. Wandell. Evaluation and statistical inference for human connectomes. Nature methods 11, no. 10 (2014): 1058-1063.](https://www.ncbi.nlm.nih.gov/pubmed/25194848)
 
-[2] Caiafa, C. and Pestilli, F. Multidimensional encoding of brain connectome. Nature Scientific Reports 7, Article number: 11491 (2017)
+[2] [Caiafa, C. and Pestilli, F. Multidimensional encoding of brain connectome. Nature Scientific Reports 7, Article number: 11491 (2017)](https://www.nature.com/articles/s41598-017-09250-w)
 
