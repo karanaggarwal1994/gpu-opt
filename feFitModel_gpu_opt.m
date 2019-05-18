@@ -1,3 +1,7 @@
+%  Copyright (2015), Franco Pestilli (Indiana Univ.) - Cesar F. Caiafa (CONICET)
+%  email: pestillifranco@gmail.com and ccaiafa@gmail.com
+% https://github.com/francopestilli/life/blob/master/LICENSE.md
+
 function [fit, w, R2] = feFitModel_gpu_opt(varargin)
 M = varargin{1};
 dSig = varargin{2};
@@ -13,10 +17,6 @@ preconditioner = varargin{5};
 %
 %   M.DictSig    Dictionary
 %   
-%  Copyright (2015), Franco Pestilli (Indiana Univ.) - Cesar F. Caiafa (CONICET)
-%  email: pestillifranco@gmail.com and ccaiafa@gmail.com
-
-
 % Below are the old comments which are not longer correct in general
 % Fit the LiFE model.
 %
