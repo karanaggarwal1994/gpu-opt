@@ -44,6 +44,7 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 	
 	``` https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/2099/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz```
 7. Unzip the downloaded .tar.gz file 
+
 	``` tar -xvzf Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz ``` 
 8. Download GPU-opt software
 
