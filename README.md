@@ -9,6 +9,13 @@ Copyright (2019), Karan Aggarwal, [karan@iisc.ac.in](karan@iisc.ac.in), Uday Bon
 # Funding 
 This work was supported in part by a grant (EMR/2016/008015) from the Science and Engineering Research Board (SERB), India through its Extramural Research funding program.
 
+# Dependencies
+* [LiFE](https://github.com/brain-life/encode)
+* [MatLab](http://www.mathworks.com/products/matlab/)
+* [vistasoft](https://github.com/vistalab/vistasoft)
+* [Matlab Brain Anatomy (MBA)](https://github.com/francopestilli/mba)
+* [CUDA](https://developer.nvidia.com/cuda-downloads)
+
 # Installation
 1. Download LiFE software 
 
@@ -26,25 +33,18 @@ This work was supported in part by a grant (EMR/2016/008015) from the Science an
 
 	``` git clone https://github.com/francopestilli/mba```
 	
-5. Download CUDA
+5. Download and Install CUDA
 
 	``` https://developer.nvidia.com/cuda-downloads ```
 
 6. Download demo datasets from the repository [doi:10.5967/K8X63JTX](https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/20995/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz)
 	
 	``` https://scholarworks.iu.edu/cgi-bin/mdssRequest.pl?file=2022/2099/Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz```
-	
-7. Download GPU-opt software
+7. Unzip the downloaded .tar.gz file 
+	``` tar -xvzf Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz ``` 
+8. Download GPU-opt software
 
 	``` git clone https://github.com/karanaggarwal1994/gpu-opt```
-
-
-# Dependencies
-* [LiFE](https://github.com/brain-life/encode)
-* [MatLab](http://www.mathworks.com/products/matlab/)
-* [vistasoft](https://github.com/vistalab/vistasoft)
-* [Matlab Brain Anatomy (MBA)](https://github.com/francopestilli/mba)
-* [CUDA](https://developer.nvidia.com/cuda-downloads)
 
 # Running the GPU-opt code
 1. Run MATLAB
