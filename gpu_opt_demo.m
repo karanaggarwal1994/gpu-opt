@@ -1,6 +1,6 @@
-% BSD 2-Clause License
+% BSD 3-Clause License
 % 
-% Copyright (c) 2019, Karan Aggarwal (karan@iisc.ac.in) and Uday Bondhugula (udayb@iisc.ac.in)
+% Copyright (c) 2019, Karan Aggarwal (karan@iisc.ac.in)
 % All rights reserved.
 % 
 % Redistribution and use in source and binary forms, with or without
@@ -13,6 +13,10 @@
 %    this list of conditions and the following disclaimer in the documentation
 %    and/or other materials provided with the distribution.
 % 
+% 3. Neither the name of the copyright holder nor the names of its
+%    contributors may be used to endorse or promote products derived from
+%    this software without specific prior written permission.
+% 
 % THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 % AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 % IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -23,6 +27,11 @@
 % CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 % OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+% 
+% This version was updated from the orignal
+% Copyright (2015), Franco Pestilli (Indiana Univ.) - Cesar F. Caiafa (CONICET)
+% email: pestillifranco@gmail.com and ccaiafa@gmail.com
+% https://github.com/francopestilli/life/blob/master/LICENSE.md
 
 function gpu_opt_demo()
 
