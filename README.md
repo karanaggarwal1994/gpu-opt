@@ -47,11 +47,11 @@ Also, include the CUDA path in bashrc file (use [link](https://devtalk.nvidia.co
 7. Unzip the downloaded .tar.gz file 
 
 	``` tar -xvzf Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz ``` 
-8. Download GPU-opt software
+8. Download LiFE-GPU-opt software
 
-	``` git clone https://github.com/karanaggarwal1994/gpu-opt```
+	``` git clone https://github.com/karanaggarwal1994/life-gpu-opt```
 
-# Running the GPU-opt code
+# Running the LiFE-GPU-opt code
 1. Run MATLAB
 2. Add the encode folder path to MATLAB search path
 
@@ -59,7 +59,7 @@ Also, include the CUDA path in bashrc file (use [link](https://devtalk.nvidia.co
 	
 3. Run the script
 
-	```>>> gpu_opt_demo```
+	```>>> life_gpu_opt_demo```
 
 # How to cite LiFE-GPU-opt
 [Karan Aggarwal, Uday Bondhugula "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems" Accepted to International Conference on Supercomputing (ICS) 2019 (to appear).](https://doi.org/10.1145/3330345.3332469)
