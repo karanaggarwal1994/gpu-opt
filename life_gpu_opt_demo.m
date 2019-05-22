@@ -33,7 +33,7 @@
 % email: pestillifranco@gmail.com and ccaiafa@gmail.com
 % https://github.com/francopestilli/life/blob/master/LICENSE.md
 
-function gpu_opt_demo()
+function life_gpu_opt_demo()
 
 if ~exist('vistaRootPath.m','file')
     disp('Vistasoft package either not installed or not on matlab path.')

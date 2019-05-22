@@ -47,11 +47,11 @@ Also, include the CUDA path in bashrc file (use [link](https://devtalk.nvidia.co
 7. Unzip the downloaded .tar.gz file 
 
 	``` tar -xvzf Demo_Data_for_Multidimensional_Encoding_of_Brain_Connectomes.tar.gz ``` 
-8. Download GPU-opt software
+8. Download LiFE-GPU-opt software
 
-	``` git clone https://github.com/karanaggarwal1994/gpu-opt```
+	``` git clone https://github.com/karanaggarwal1994/life-gpu-opt```
 
-# Running the GPU-opt code
+# Running the LiFE-GPU-opt code
 1. Run MATLAB
 2. Add the encode folder path to MATLAB search path
 
@@ -59,15 +59,17 @@ Also, include the CUDA path in bashrc file (use [link](https://devtalk.nvidia.co
 	
 3. Run the script
 
-	```>>> gpu_opt_demo```
+	```>>> life_gpu_opt_demo```
 
 # How to cite LiFE-GPU-opt
 [Karan Aggarwal, Uday Bondhugula "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core Systems" Accepted to International Conference on Supercomputing (ICS) 2019 (to appear).](https://doi.org/10.1145/3330345.3332469)
 
-[Karan Aggarwal, Uday Bondhugula, Varsha Sreenivasan, Sridharan Devarajan "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core and Many-Core Systems"](https://arxiv.org/pdf/1905.06234.pdf).
+[Karan Aggarwal, Uday Bondhugula "Optimizing the Linear Fascicle Evaluation Algorithm for Multi-Core and Many-Core Systems"](https://arxiv.org/pdf/1905.06234.pdf).
 
-# References
+# Other References
 [1] [Pestilli, Franco, Jason D. Yeatman, Ariel Rokem, Kendrick N. Kay, and Brian A. Wandell. Evaluation and statistical inference for human connectomes. Nature methods 11, no. 10 (2014): 1058-1063.](https://www.ncbi.nlm.nih.gov/pubmed/25194848)
 
 [2] [Caiafa, C. and Pestilli, F. Multidimensional encoding of brain connectome. Nature Scientific Reports 7, Article number: 11491 (2017)](https://www.nature.com/articles/s41598-017-09250-w)
+
+[3] Kumar, S., Sreenivasan V., Talukdar P., Pestilli F., and Sridharan D. (2019, January) "ReAl-LiFE: Accelerating the discovery of individualized brain connectomes on GPUs." Accepted to AAAI 2019 (proceedings in press).
 
