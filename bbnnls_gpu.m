@@ -97,7 +97,6 @@ function out = bbnnls_gpu(M, b, x0, opt)
     Mg.cp_mw = vox;   %[valid options: vox,coeff]
     Mg.cp_my = coeff; %[valid options: vox,atom,coeff]
     
-    
     % Data restructuring
     ds_mw  = vox_ds;  %[valid options: vox_ds]
     ds_my  = atom_ds; %[valid options: atom_ds,vox_ds]
@@ -124,6 +123,7 @@ function out = bbnnls_gpu(M, b, x0, opt)
     
     % Compile C file to generate .mex code
     cpu_compile();
+    
     % Compile CUDA file to generate .PTX code
     gpu_compile(nTheta,mc_mw,mc_my);
     
