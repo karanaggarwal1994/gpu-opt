@@ -59,41 +59,82 @@ function out = bbnnls_gpu(M, b, x0, opt)
         nTheta = Mg.nTheta;
     end
     
-    %Basic Compiler Optimizations
-    Mg.atoms1   = uint64((M.Phi.subs(:,1)-1)*nTheta);
-    Mg.voxels1  = uint64((M.Phi.subs(:,2)-1)*nTheta);
-    Mg.fibers1  = uint64(M.Phi.subs(:,3)-1);
-    Mg.vals1    = M.Phi.vals;
+    % ***Basic Compiler Optimizations + Data Restructuring***
     
-    %Data Restructuring (based on voxel-dimension)
-    [Mg.voxels2,order] = sort(Mg.voxels1);
-    Mg.atoms2   = Mg.atoms1(order);
-    Mg.fibers2  = Mg.fibers1(order);
-    Mg.vals2    = Mg.vals1(order);
+    % *Atom-based data restructuring
+    atom_ds.atoms   = uint64((M.Phi.subs(:,1)-1)*nTheta);
+    atom_ds.voxels  = uint64((M.Phi.subs(:,2)-1)*nTheta);
+    atom_ds.fibers  = uint64(M.Phi.subs(:,3)-1);
+    atom_ds.vals    = M.Phi.vals;
     
-    % Computation Splitting
-    [~, vox, ~] = unique(Mg.voxels2);
+    % *Voxel-based data restructuring
+    [vox_ds.voxels,order] = sort(atom_ds.voxels);
+    vox_ds.atoms          = atom_ds.atoms(order);
+    vox_ds.fibers         = atom_ds.fibers(order);
+    vox_ds.vals           = atom_ds.vals(order);
+    
+    % ***Computation Partitioning***
+    
+    % Coefficient-based partitioning
+    coeff = uint64((0:nCoeffs));
+    coeff = coeff';
+    
+    % Voxel-based partitioning
+    [~, vox, ~] = unique(vox_ds.voxels);
     vox = uint64(vox - 1);
-    vox=vox(:);
+    vox = vox(:);
     vox(size(vox)+1) = nCoeffs;
     
-    % Scheduling Multiple Computations
-    nc_mw=4;
-    nc_my=4;
+    % Atom-based partitioning
+    [~, atom, ~] = unique(atom_ds.atoms);
+    atom = uint64(atom - 1);
+    atom = atom(:);
+    atom(size(atom)+1) = nCoeffs;
+
+    % ***Setting the parameters***
+    
+    % Computation Partitioning
+    Mg.cp_mw = vox;   %[valid options: vox,coeff]
+    Mg.cp_my = coeff; %[valid options: vox,atom,coeff]
+    
+    
+    % Data restructuring
+    ds_mw  = vox_ds;  %[valid options: vox_ds]
+    ds_my  = atom_ds; %[valid options: atom_ds,vox_ds]
+    
+    % Multiple Computations
+    mc_mw = 4;
+    mc_my = 4;
+    
+    % Setting the choice to run a code section at runtime
+    Mg.choice_mw=uint64((size(Mg.cp_mw,1)-1)==(Mg.nCoeffs));
+    Mg.choice_my=uint64((size(Mg.cp_my,1)-1)==(Mg.nCoeffs));
+    
+    % GPU arrays support only fundamental numeric or logical data types.
+    % Hence, converting them Mg to GPU arrays format
+    Mg.mw_atoms  = ds_mw.atoms;
+    Mg.mw_voxels = ds_mw.voxels;
+    Mg.mw_fibers = ds_mw.fibers;
+    Mg.mw_vals   = ds_mw.vals;
+    
+    Mg.my_atoms  = ds_my.atoms;
+    Mg.my_voxels = ds_my.voxels;
+    Mg.my_fibers = ds_my.fibers;
+    Mg.my_vals   = ds_my.vals;
     
     % Compile C file to generate .mex code
     cpu_compile();
     % Compile CUDA file to generate .PTX code
-    gpu_compile(nTheta,nc_mw,nc_my);
+    gpu_compile(nTheta,mc_mw,mc_my);
     
     % Set default GPU parameters
     MTW_CU_OBJ = parallel.gpu.CUDAKernel('gpu_opt_code.ptx','gpu_opt_code.cu','M_times_w');        
-    MTW_CU_OBJ.GridSize        = [ceil(size(vox,1)/nc_mw) 1];
-    MTW_CU_OBJ.ThreadBlockSize = [(32*nc_mw) 1];
+    MTW_CU_OBJ.GridSize        = [ceil(size(Mg.cp_mw)/mc_mw) 1];
+    MTW_CU_OBJ.ThreadBlockSize = [(32*mc_mw) 1];
  
     MTB_CU_OBJ= parallel.gpu.CUDAKernel('gpu_opt_code.ptx','gpu_opt_code.cu','Mtransp_times_b');
-    MTB_CU_OBJ.GridSize = [ceil(nCoeffs(:,1)/nc_my) 1];
-    MTB_CU_OBJ.ThreadBlockSize = [(32*nc_my) 1];
+    MTB_CU_OBJ.GridSize         = [ceil(size(Mg.cp_my)/mc_my) 1];
+    MTB_CU_OBJ.ThreadBlockSize  = [(32*mc_my) 1];
     
     Mg.Nphi    = M.Nphi;
     Mg.Ntheta  = M.Ntheta;
@@ -104,7 +145,7 @@ function out = bbnnls_gpu(M, b, x0, opt)
     x0         = gpuArray(x0);
     clear order;
     
-    [out.obj,out.grad] =  funcGrad(Mg,b,x0,MTW_CU_OBJ,MTB_CU_OBJ,vox);
+    [out.obj,out.grad] =  funcGrad(Mg,b,x0,MTW_CU_OBJ,MTB_CU_OBJ);
     
     % do some initialization for maintaining statistics
     out.iter      = 0;
@@ -118,7 +159,7 @@ function out = bbnnls_gpu(M, b, x0, opt)
     % HINT: Very important for overall speed is to have a good x0
     out.x      = x0;
     out.refx   = x0;
-    [out.refobj, out.grad] = funcGrad(Mg,b,out.x,MTW_CU_OBJ,MTB_CU_OBJ,vox);
+    [out.refobj, out.grad] = funcGrad(Mg,b,out.x,MTW_CU_OBJ,MTB_CU_OBJ);
     out.oldg   = out.grad;
     out.refg   = out.oldg;
 
@@ -133,11 +174,11 @@ function out = bbnnls_gpu(M, b, x0, opt)
         out.iter = out.iter + 1;
         [termReason, out.pgTimes(out.iter)] = checkTermination(opt, out);
         if (termReason > 0), break; end
-            [step, out] = computeBBStep(Mg,b,out,MTW_CU_OBJ,MTB_CU_OBJ,vox);
+            [step, out] = computeBBStep(Mg,b,out,MTW_CU_OBJ,MTB_CU_OBJ);
             out.x       = out.x - step * out.grad;
             out.oldg    = out.grad;        
             out.x(out.x < 0) = 0;        
-            [out.obj,out.grad] =  funcGrad(Mg,b,out.x,MTW_CU_OBJ,MTB_CU_OBJ,vox);
+            [out.obj,out.grad] =  funcGrad(Mg,b,out.x,MTW_CU_OBJ,MTB_CU_OBJ);
             objectives(out.iter) = out.obj;
             out.objTimes (out.iter) = out.obj;
             out.iterTimes(out.iter) = toc(out.startTime);
@@ -161,28 +202,27 @@ end
 
 % Compute BB step; for SBB also modifies out.oldg, and this change must be
 % passed back to the calling routine, else it will fail!
-%function [step out] = computeBBStep(A, b, out)
-function [step, out] = computeBBStep(A,~,out,MTW_CU_OBJ,MTB_CU_OBJ,vox)
-    [nTheta]  = A.nTheta; 
-    [nFibers] = A.nFibers; %feGet(fe,'nfibers');
-    [nVoxels] = A.nVoxels; %feGet(fe,'nvoxels');    
-    [nCoeffs] = A.nCoeffs;
+function [step, out] = computeBBStep(Mg,~,out,MTW_CU_OBJ,MTB_CU_OBJ)
+    [nTheta]  = Mg.nTheta; 
+    [nFibers] = Mg.nFibers;
+    [nVoxels] = Mg.nVoxels;
+    [nCoeffs] = Mg.nCoeffs;
     
     gp = find(out.x == 0 & out.grad > 0);
     out.oldg(gp) = 0;
 
-     D       =  gpuArray(A.DictSig);
+     D       =  gpuArray(Mg.DictSig);
      D_vec   =  D(:);
      Y       =  zeros(nTheta,nVoxels,'gpuArray');
      Y_vec   =  Y(:);
-     Ag      =  feval(MTW_CU_OBJ,Y_vec,A.atoms2,A.voxels2,A.fibers2,A.vals2,D_vec,out.oldg,nTheta,nVoxels,nCoeffs,vox,size(vox,1));
+     Ag      =  feval(MTW_CU_OBJ,Y_vec,Mg.mw_atoms,Mg.mw_voxels,Mg.mw_fibers,Mg.mw_vals,D_vec,out.oldg,nTheta,nVoxels,nCoeffs,Mg.cp_mw,size(Mg.cp_mw,1),Mg.choice_mw);
      wait(gpuDevice);
      if (mod(out.iter, 2) == 0)
          step = (out.oldg' * out.oldg) / (Ag' * Ag);
      else
          numer = Ag' * Ag;
          w       =  zeros(nFibers,1,'gpuArray');
-         Ag      =  feval(MTB_CU_OBJ,w,A.atoms1,A.voxels1,A.fibers1,A.vals1,D_vec,Ag,nFibers,nTheta,nCoeffs,vox);
+         Ag      =  feval(MTB_CU_OBJ,w,Mg.my_atoms,Mg.my_voxels,Mg.my_fibers,Mg.my_vals,D_vec,Ag,nFibers,nTheta,nCoeffs,Mg.cp_my,size(Mg.cp_my,1),Mg.choice_my);
          wait(gpuDevice);
          Ag(gp) = 0;        
          step = numer / (Ag' * Ag);
@@ -191,23 +231,23 @@ end
 
 % compute obj function and gradient --- requires good implementation of A*x
 % and A'*y for appropriate x and y
-function [f,g] = funcGrad(A,b,x,MTW_CU_OBJ,MTB_CU_OBJ,vox)
-    [nFibers] = A.nFibers; 
-    [nTheta]  = size(A.DictSig,1);
-    [nVoxels] = A.nVoxels;   
-     nCoeffs  = A.nCoeffs;
+function [f,g] = funcGrad(Mg,b,x,MTW_CU_OBJ,MTB_CU_OBJ)
+    [nFibers] = Mg.nFibers; 
+    [nTheta]  = size(Mg.DictSig,1);
+    [nVoxels] = Mg.nVoxels;   
+     nCoeffs  = Mg.nCoeffs;
    
-         D       =  gpuArray(A.DictSig);
+         D       =  gpuArray(Mg.DictSig);
          D_vec   =  D(:);
          Y       =  zeros(nTheta,nVoxels,'gpuArray');
          Y_vec   =  Y(:);         
-         Ax      =  feval(MTW_CU_OBJ,Y_vec,A.atoms2,A.voxels2,A.fibers2,A.vals2,D_vec,x,nTheta,nVoxels,nCoeffs,vox,size(vox,1));
+         Ax      =  feval(MTW_CU_OBJ,Y_vec,Mg.mw_atoms,Mg.mw_voxels,Mg.mw_fibers,Mg.mw_vals,D_vec,x,nTheta,nVoxels,nCoeffs,Mg.cp_mw,size(Mg.cp_mw,1),Mg.choice_mw);
          wait(gpuDevice);
          Ax      =  Ax-b;
          
          if (nargout > 1)
             w       = zeros(nFibers,1,'gpuArray');
-            g = feval(MTB_CU_OBJ,w,A.atoms1,A.voxels1,A.fibers1,A.vals1,D_vec,Ax,nFibers,nTheta,nCoeffs,vox);  
+            g = feval(MTB_CU_OBJ,w,Mg.my_atoms,Mg.my_voxels,Mg.my_fibers,Mg.my_vals,D_vec,Ax,nFibers,nTheta,nCoeffs,Mg.cp_my,size(Mg.cp_my,1),Mg.choice_my);  
             wait(gpuDevice);
          end
          f       =  0.5*norm(Ax)^2;   

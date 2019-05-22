@@ -28,9 +28,7 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <assert.h>
 #include <cuda.h>
-#include <float.h> /* provides DBL_EPSILON */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,70 +73,114 @@ __global__ void compute_diag_sub(double *dPtr, const unsigned long *atomsPtr,
   return;
 }
 
-__global__ void M_times_w(
-    double *YPtr, const unsigned long *atomsPtr, const unsigned long *voxelsPtr,
-    const unsigned long *fibersPtr, const double *valuesPtr, const double *DPtr,
-    const double *wPtr, const int nTheta, const unsigned long nVoxels,
-    const unsigned long nCoeffs, const unsigned long *vox, const long nvox) {
+__global__ void M_times_w(double *YPtr, const unsigned long *atomsPtr,
+                          const unsigned long *voxelsPtr,
+                          const unsigned long *fibersPtr,
+                          const double *valuesPtr, const double *DPtr,
+                          const double *wPtr, const int nTheta,
+                          const unsigned long nVoxels,
+                          const unsigned long nCoeffs, const unsigned long *vox,
+                          const long nvox, int ch) {
   unsigned long long k = (threadIdx.x / 32) + (blockIdx.x * nc_mw);
   if (k < nvox) {
-    unsigned long voxel_index = voxelsPtr[vox[k]];
-    __shared__ double y[nc_mw][Theta];
-    int th_id = threadIdx.x % 32;
-    while (th_id < nTheta) {
-      y[threadIdx.x / 32][th_id] = YPtr[voxel_index + th_id];
-      th_id = th_id + 32;
-    }
-    __syncwarp();
+    if (ch == 0) {
+      unsigned long voxel_index = voxelsPtr[vox[k]];
+      __shared__ double y[nc_mw][Theta];
+      int th_id = threadIdx.x % 32;
+      while (th_id < nTheta) {
+        y[threadIdx.x / 32][th_id] = YPtr[voxel_index + th_id];
+        th_id = th_id + 32;
+      }
+      __syncwarp();
 #pragma unroll 8
-    for (int t = vox[k]; t < vox[k + 1]; t++) {
-      unsigned long fiber_index = fibersPtr[t];
-      if (wPtr[fiber_index]) {
-        th_id = threadIdx.x % 32;
+      for (int t = vox[k]; t < vox[k + 1]; t++) {
+        unsigned long fiber_index = fibersPtr[t];
         unsigned long atom_index = atomsPtr[t];
-        double val = wPtr[fiber_index] * valuesPtr[t];
+        if (wPtr[fiber_index]) {
+          th_id = threadIdx.x % 32;
+          double val = wPtr[fiber_index] * valuesPtr[t];
+          while (th_id < nTheta) {
+            y[threadIdx.x / 32][th_id] += DPtr[atom_index + th_id] * val;
+            th_id = th_id + 32;
+          }
+        }
+        __syncwarp();
+      }
+      __syncwarp();
+      th_id = threadIdx.x % 32;
+      while (th_id < nTheta) {
+        YPtr[voxel_index + th_id] = y[threadIdx.x / 32][th_id];
+        th_id = th_id + 32;
+      }
+    } else {
+      unsigned long voxel_index = voxelsPtr[k];
+      unsigned long fiber_index = fibersPtr[k];
+      unsigned long atom_index = atomsPtr[k];
+
+      int th_id = threadIdx.x % 32;
+      if (wPtr[fiber_index]) {
+        double val = wPtr[fiber_index] * valuesPtr[k];
         while (th_id < nTheta) {
-          y[threadIdx.x / 32][th_id] += DPtr[atom_index + th_id] * val;
+          atomicAdd(&YPtr[voxel_index + th_id], DPtr[atom_index + th_id] * val);
           th_id = th_id + 32;
         }
       }
-      __syncwarp();
-    }
-    __syncwarp();
-    th_id = threadIdx.x % 32;
-    while (th_id < nTheta) {
-      YPtr[voxel_index + th_id] = y[threadIdx.x / 32][th_id];
-      th_id = th_id + 32;
     }
   }
   return;
 }
 
-__global__ void Mtransp_times_b(double *wPtr, const unsigned long *atomsPtr,
-                                const unsigned long *voxelsPtr,
-                                const unsigned long *fibersPtr,
-                                const double *valuesPtr, const double *DPtr,
-                                const double *YPtr, const unsigned long nFibers,
-                                const int nTheta, const long nCoeffs,
-                                const unsigned long *vox) {
+__global__ void Mtransp_times_b(
+    double *wPtr, const unsigned long *atomsPtr, const unsigned long *voxelsPtr,
+    const unsigned long *fibersPtr, const double *valuesPtr, const double *DPtr,
+    const double *YPtr, const unsigned long nFibers, const int nTheta,
+    const long nCoeffs, const unsigned long *vox, const long nvox, int ch) {
   unsigned long long k = (threadIdx.x / 32) + (blockIdx.x * nc_my);
-  if (k < nCoeffs) {
-    unsigned long voxel_index = voxelsPtr[k];
-    unsigned long atom_index = atomsPtr[k];
-    double val;
-    int th_id = threadIdx.x % 32;
-    while (th_id < nTheta) {
-      val = val + (DPtr[atom_index + th_id] * YPtr[voxel_index + th_id]);
-      th_id = th_id + 32;
-    }
-    __syncwarp();
+  if (k < nvox) {
+    if (ch == 0) {
+      for (int t = vox[k]; t < vox[k + 1]; t++) {
+        unsigned long voxel_index = voxelsPtr[t];
+        unsigned long atom_index = atomsPtr[t];
+        unsigned long fiber_index = fibersPtr[t];
+
+        double val = 0;
+        int th_id = threadIdx.x % 32;
+        while (th_id < nTheta) {
+          val = val + (DPtr[atom_index + th_id] * YPtr[voxel_index + th_id]);
+          th_id = th_id + 32;
+        }
+        __syncwarp();
 #pragma unroll 5
-    for (int j = 16; j >= 1; j = j / 2) {
-      val += __shfl_down_sync(FULL_MASK, val, j);
-    }
-    __syncwarp();
-    if ((threadIdx.x % 32) == 0) {
-      atomicAdd(&wPtr[fibersPtr[k]], val * valuesPtr[k]);
+        for (int j = 16; j >= 1; j = j / 2) {
+          val += __shfl_down_sync(FULL_MASK, val, j);
+        }
+        __syncwarp();
+        if ((threadIdx.x % 32) == 0) {
+          atomicAdd(&wPtr[fiber_index], val * valuesPtr[t]);
+        }
+        __syncwarp();
+      }
+    } else {
+      unsigned long voxel_index = voxelsPtr[k];
+      unsigned long atom_index = atomsPtr[k];
+      unsigned long fiber_index = fibersPtr[k];
+
+      double val = 0;
+      int th_id = threadIdx.x % 32;
+      while (th_id < nTheta) {
+        val = val + (DPtr[atom_index + th_id] * YPtr[voxel_index + th_id]);
+        th_id = th_id + 32;
+      }
+      __syncwarp();
+#pragma unroll 5
+      for (int j = 16; j >= 1; j = j / 2) {
+        val += __shfl_down_sync(FULL_MASK, val, j);
+      }
+      __syncwarp();
+      if ((threadIdx.x % 32) == 0) {
+        atomicAdd(&wPtr[fiber_index], val * valuesPtr[k]);
+      }
+      __syncwarp();
     }
   }
   return;
