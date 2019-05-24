@@ -1,4 +1,4 @@
-% This version was derived from the original version by Pestilli and Caifa.
+% This version was derived from the original version by Pestilli and Caiafa.
 % Copyright (2015), Franco Pestilli (Indiana Univ.) - Cesar F. Caiafa (CONICET)
 % email: pestillifranco@gmail.com and ccaiafa@gmail.com
 % https://github.com/francopestilli/life available under
