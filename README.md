@@ -8,6 +8,7 @@ The original LiFE [1,2] code can be found using the [Github link](https://github
 
 # License
 LiFE-GPI-opt is available under BSD 3-Clause license.
+
 Copyright (2019), Karan Aggarwal, [karan@iisc.ac.in](karan@iisc.ac.in), Uday Bondhugula, [udayb@iisc.ac.in](udayb@iisc.ac.in)
 
 # Funding 
