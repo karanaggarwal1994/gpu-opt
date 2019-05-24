@@ -1,3 +1,9 @@
+% This version was derived from the original version by Pestilli and Caifa.
+% Copyright (2015), Franco Pestilli (Indiana Univ.) - Cesar F. Caiafa (CONICET)
+% email: pestillifranco@gmail.com and ccaiafa@gmail.com
+% https://github.com/francopestilli/life available under
+% https://github.com/francopestilli/life/blob/master/LICENSE.md
+% 
 % BSD 3-Clause License
 % 
 % Copyright (c) 2019, Karan Aggarwal (karan@iisc.ac.in)
@@ -27,11 +33,6 @@
 % CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 % OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-% 
-% This version was updated from the orignal
-% Copyright (2015), Franco Pestilli (Indiana Univ.) - Cesar F. Caiafa (CONICET)
-% email: pestillifranco@gmail.com and ccaiafa@gmail.com
-% https://github.com/francopestilli/life/blob/master/LICENSE.md
 
 function [fit, w, R2] = feFitModel_gpu_opt(varargin)
 M = varargin{1};
@@ -68,9 +69,6 @@ preconditioner = varargin{5};
 % See also: feCreate.m, feConnectomeBuildModel.m, feGet.m, feSet.m
 %
 % Example:
-%
-%  Copyright (2015), Franco Pestilli (Indiana Univ.) - Cesar F. Caiafa (CONICET)
-%  email: pestillifranco@gmail.com and ccaiafa@gmail.com
 %
 % Notes about the LiFE model:
 %
