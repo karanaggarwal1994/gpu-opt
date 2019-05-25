@@ -7,9 +7,9 @@ This software is an optimized implementation of the compute-intensive matrix ope
 The original LiFE [1,2] code can be found using the [Github link](https://github.com/brain-life/encode).
 
 # License
-LiFE-GPU-opt software is available under BSD 3-Clause license.
+LiFE-GPU-opt software is available under the BSD 3-Clause license.
 
-Copyright (2019), Karan Aggarwal, [karan@iisc.ac.in](karan@iisc.ac.in), Uday Bondhugula, [udayb@iisc.ac.in](udayb@iisc.ac.in)
+Copyright (2019), Karan Aggarwal, [karan@iisc.ac.in](karan@iisc.ac.in)
 
 # Funding 
 This work was supported in part by a grant (EMR/2016/008015) from the Science and Engineering Research Board (SERB), India through its Extramural Research funding program.
